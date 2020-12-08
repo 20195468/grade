@@ -2,10 +2,11 @@
 //假设取10个节点，N=28
 //定义无穷大为100000
 #define N 20
-double distance[N];//最短路径
+int distance[N];//最短路径
 int path[N];//上一节点
 int is[N];//是否选用该节点,0位未选用
-double destination[N][N] = {
+int start;
+int destination[N][N] = {
         {10000, 75,    10000, 10000, 10000, 10000, 10000, 10000, 10000, 10000, 10000, 10000, 10000, 10000, 10000, 10000, 10000, 10000, 10000, 10000},
         {55,    10000, 15,    10000, 100,   10000, 10000, 10000, 10000, 10000, 10000, 10000, 10000, 10000, 10000, 10000, 10000, 10000, 10000, 10000},
         {10000, 45,    10000, 75,    15,    10000, 10000, 10000, 10000, 10000, 10000, 10000, 10000, 10000, 10000, 10000, 10000, 10000, 10000, 10000},
@@ -53,15 +54,38 @@ void find() {
 
 //输出最短路径
 void showpath() {
+    int count = 1, count1 = 1;
     for (int i = 1; i < N; i++) {
         if (is[i] == 1) {
             int k = i;
+
+            //输出到第一个结点
+            if (start != 0 && start != 1) {
+                if (count == 1) {
+                    while (k != -1) {
+                        printf("0<-%d<-", k);
+                        k = path[k];
+                    }//若前一节点不为起点则不断查询前一节点
+                    printf("%d 价格为: %d", start, distance[i]);
+                    printf("\n");
+                    count++;
+                }
+            }
+            if (start == 1 && count1 == 1) {
+                printf("0<-");
+                printf("%d 价格为: 55", start);
+                printf("\n");
+                count1++;
+            }
+
+            k = i;
             while (k != -1) {
-                printf("%d<-", k+1);
+                printf("%d<-", k);
                 k = path[k];
             }//若前一节点不为起点则不断查询前一节点
-            printf("1 价格为: %lf", distance[i]);
+            printf("%d 价格为: %d", start, distance[i]);
             printf("\n");
+
         } else {
             printf("%d不能到达", i);
             printf("\n");
@@ -72,12 +96,13 @@ void showpath() {
 //主函数起到遍历初始值的效果
 int main() {
     //开始时进行初始化遍历
+    start = 1;
     for (int i = 0; i < N; i++) {
         path[i] = -1;//一开始所有点的前一点为起点
         is[i] = 0;//都未选用
-        distance[i] = destination[0][i];//初始时路程都为起点道该点距离
+        distance[i] = destination[start][i];//初始时路程都为起点道该点距离
     }
-    is[0] = 1;//第一个节点选用
+    is[start] = 1;//第一个节点选用
     find();
     showpath();
 }
