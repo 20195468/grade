@@ -29,6 +29,11 @@ int destination[N][N] = {
         {10000, 10000, 10000, 10000, 10000, 10000, 10000, 45,    10000, 10000, 10000, 10000, 10000, 10000, 10000, 10000, 10000, 10000, 10000, 10000}
 
 };//路程矩阵
+char name[20][15] = {"Lisbon", "Madrid", "Bern", "Rome", "Pairs", "London", "Brussels", "Amsterdam", "Berlin", "Prague",
+                     "Warsaw", "Bucharest", "Budapest", "Vienna", "Sarajevo", "Sofia", "Skopja", "Tirane", "Athens",
+                     "Copenhagen"
+};
+
 //find函数寻找最短路径
 void find() {
     //最多进行N-1次循环
@@ -63,31 +68,31 @@ void showpath() {
             if (start != 0 && start != 1) {
                 if (count == 1) {
                     while (k != -1) {
-                        printf("0<-%d<-", k);
+                        printf("Lisbon <- %s <-", name[k]);
                         k = path[k];
                     }//若前一节点不为起点则不断查询前一节点
-                    printf("%d 价格为: %d", start, distance[i]);
+                    printf("%s 价格为: %d", name[start], distance[i]);
                     printf("\n");
                     count++;
                 }
             }
             if (start == 1 && count1 == 1) {
-                printf("0<-");
-                printf("%d 价格为: 55", start);
+                printf("Lisbon <- ");
+                printf("Madrid 价格为: 55");
                 printf("\n");
                 count1++;
             }
 
             k = i;
             while (k != -1) {
-                printf("%d<-", k);
+                printf("%s <-", name[k]);
                 k = path[k];
             }//若前一节点不为起点则不断查询前一节点
-            printf("%d 价格为: %d", start, distance[i]);
+            printf("%s 价格为: %d", name[start], distance[i]);
             printf("\n");
 
         } else {
-            printf("%d不能到达", i);
+            printf("%s不能到达", name[i]);
             printf("\n");
         }
     }
@@ -96,13 +101,17 @@ void showpath() {
 //主函数起到遍历初始值的效果
 int main() {
     //开始时进行初始化遍历
-    start = 1;
-    for (int i = 0; i < N; i++) {
-        path[i] = -1;//一开始所有点的前一点为起点
-        is[i] = 0;//都未选用
-        distance[i] = destination[start][i];//初始时路程都为起点道该点距离
+    for (int m = 0; m < 20; ++m) {
+        start = m;
+        printf("%s为起点\n", name[m]);
+        for (int i = 0; i < N; i++) {
+            path[i] = -1;//一开始所有点的前一点为起点
+            is[i] = 0;//都未选用
+            distance[i] = destination[start][i];//初始时路程都为起点道该点距离
+        }
+        is[start] = 1;//第一个节点选用
+        find();
+        showpath();
     }
-    is[start] = 1;//第一个节点选用
-    find();
-    showpath();
+
 }
