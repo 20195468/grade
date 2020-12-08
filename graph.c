@@ -38,7 +38,7 @@ void find() {
             if (is[i] == 0 && distance[i] <= max) {
                 u = i;
                 max = distance[i];
-                printf("нч")
+                printf("no change")
             }
         }
         is[u] = 1;
